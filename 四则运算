@@ -1,0 +1,56 @@
+public class Sizeyunsuan {
+	public static void main(String[] args)
+	{
+		for(int i=0;i<30;i++)//循环30次，30道题
+		{
+			int mid,nup1,ndown1,nup2,ndown2;
+			String s1=new String();
+			String s2=new String();
+			String suanshi=new String();
+			
+			String fuhao=new String();//符号判定
+			mid=(int)(Math.random()*4);
+			if(mid==0) fuhao="+";
+			if(mid==1) fuhao="-";
+			if(mid==2) fuhao="*";
+			if(mid==3) fuhao="/";
+			
+			for(int j=0;j<2;j++)//两次循环，第一次为第一个数字，第二次为第二个数字
+			{
+				int n1 =-1,n2=-1;//用于后面是否为分数的判定
+				int s=(int)(Math.random()*2);//随机数判定整数或分数，0->整数，1->分数
+				if(s==0)//整数
+				{
+					n1=(int)(Math.random()*100);
+				}
+				if(s==1)//分数
+				{
+					n1=(int)(Math.random()*100);//分子
+					n2=(int)(1+Math.random()*99);//分母不能为0
+				}
+				if(j==0)//第一个数字
+				{
+					nup1=n1;ndown1=n2;
+					if(ndown1>=0)//如果存在分母，则为分数
+					{s1="("+nup1+"/"+ndown1+")"+"";}
+					else//否则为整数
+					{s1=nup1+"";}
+				}
+				if(j==1)//第二个数字
+				{
+					nup2=n1;ndown2=n2;
+					if(mid==3)//当为除法时，除数不能为0，
+					{
+						nup2=(int)(1+Math.random()*99);//分子或整数不能为0
+					}
+					if(ndown2>=0)//如果存在分母，则为分数
+					{s2="("+nup2+"/"+ndown2+")"+"";}
+					else//否则为整数
+					{s2=nup2+"";}
+				}
+			}
+			suanshi=suanshi+s1+fuhao+s2+"=";//算式
+			System.out.println(suanshi);
+		}
+	}
+}
