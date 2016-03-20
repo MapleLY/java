@@ -1,0 +1,290 @@
+import java.util.Scanner;
+public class operations2 {
+	public static int SIZE(int size)//定制数量
+	{
+		int s;
+		s=size;
+		return s;
+	}
+	
+	public static int MultiplyDivide(String p1)//是否有乘除法
+	{
+		int m = 4;
+		if(p1.equals("Y")){m=4;}
+		if(p1.equals("N")){m=2;}
+		return m;
+	}
+	
+	public static String Negative(String p2)//加减有无负数
+	{
+		String n;
+		n=p2;
+		return n;
+	}
+	
+	public static String Remainder(String p3)//除法有无余数
+	{
+		String r;
+		r=p3;
+		return r;
+	}
+	
+	public static int Max(int max)//最大数
+	{
+		int m;
+		m=max;
+		return m;
+	}
+	public static int Min(int min)//最小数
+	{
+		int m;
+		m=min;
+		return m;
+	}
+	
+	public static void Work(int MultiplyDivide,String Negative,String Remainder,int Max,int Min,int SIZE)//算式计算
+	{
+		String Again[][]=new String[SIZE][1];//用数组装算式，用以判断是否重复
+		for(int i=0;i<SIZE;i++)//重复次数，用以确定算式多少
+		{		
+		int cha=Max-Min;
+		int mid,nup1,ndown1,nup2,ndown2;
+		String s1=new String();
+		String s2=new String();
+		String suanshi=new String();
+		
+		String fuhao=new String();//符号判定
+		mid=(int)(Math.random()*MultiplyDivide);
+		if(mid==0) fuhao="+";
+		if(mid==1) fuhao="-";
+		if(mid==2) fuhao="*";
+		if(mid==3) fuhao="/";
+		
+		for(int j=0;j<2;j++)//两次循环，第一次为第一个数字，第二次为第二个数字
+		{
+			int n1 =-99999,n2=-99999;//用于后面是否为分数的判定
+			int s=(int)(Math.random()*2);//随机数判定整数或分数，0->整数，1->分数
+			if(s==0)//整数
+			{
+				if(Negative.equals("N"))
+				{
+					if(mid==0||mid==1)
+					{
+						while(n1<0)
+						{n1=(int)(Min+Math.random()*(cha+1));}
+					}
+					else
+					{
+						n1=(int)(Min+Math.random()*(cha+1));
+					}
+				}
+				if(Negative.equals("Y"))
+				{n1=(int)(Min+Math.random()*(cha+1));}
+			}
+			if(s==1)//分数
+			{
+				n1=(int)(Min+Math.random()*(cha+1));
+				n2=(int)(Min+Math.random()*(cha+1));
+					if(Negative.equals("N"))
+					{
+						if(mid==0||mid==1)
+						{
+							while(n1<=0||n2<=0)
+							{
+								n1=(int)(Min+Math.random()*(cha+1));
+								n2=(int)(Min+Math.random()*(cha+1));
+							}
+						}
+						else
+						{
+							while(n1==0||n2==0)
+							{
+							n1=(int)(Min+Math.random()*(cha+1));
+							n2=(int)(Min+Math.random()*(cha+1));
+							}
+						}
+					}
+					if(Negative.equals("Y"))
+					{
+						while(n1==0||n2==0)
+						{
+						n1=(int)(Min+Math.random()*(cha+1));
+						n2=(int)(Min+Math.random()*(cha+1));
+						}
+					}
+				int z1=Math.abs(n1),z2=Math.abs(n2);
+				int chushu=2;
+				if(z1>z2)
+				{
+					while(z2>=chushu)
+					{
+						if(z1%chushu==0&&z2%chushu==0)
+						{z1=z1/chushu;z2=z2/chushu;}
+						else
+						{chushu++;}
+					}
+					
+				}
+				else if(z1<z2)
+				{
+					while(z1>=chushu)
+					{
+						if(z1%chushu==0&&z2%chushu==0)
+						{z1=z1/chushu;z2=z2/chushu;}
+						else
+						{chushu++;}
+					}
+				}
+				else
+				{
+					z1=1;z2=1;
+				};
+				if(n1<0){n1=0-z1;}
+				else {n1=z1;}
+				if(n2<0){n2=0-z2;}
+				else {n2=z2;}
+			}
+			if(j==0)//第一个数字
+			{
+				nup1=n1;ndown1=n2;
+				if(ndown1==-1&&nup1<0)
+				{nup1=Math.abs(nup1);}
+				if(ndown1==-1&&nup1>0)
+				{nup1=0-nup1;}
+				if(ndown1>-99999)//如果存在分母，则为分数
+				{
+					if(Math.abs(ndown1)!=1)
+					{
+						if(nup1<0&&ndown1<0)
+						{nup1=Math.abs(nup1);ndown1=Math.abs(ndown1);}
+						if(ndown1<0)
+						{s1="("+nup1+"/("+ndown1+"))"+"";}
+						else
+						{s1="("+nup1+"/"+ndown1+")"+"";}
+					}
+					if(Math.abs(ndown1)==1)//否则为整数
+					{
+						if(nup1>=0)
+						{s1=nup1+"";}
+						if(nup1<0)
+						{s1="("+nup1+")"+"";}
+					}
+				}
+				
+				else//否则为整数
+				{
+					if(nup1>=0)
+					{s1=nup1+"";}
+					if(nup1<0)
+					{s1="("+nup1+")"+"";}
+				}
+			}
+			if(j==1)//第二个数字
+			{
+				nup2=n1;ndown2=n2;
+				if(mid==3)//当为除法时，除数不能为0，
+				{
+					while(nup2==0)
+					{nup2=(int)(Min+Math.random()*(cha+1));}//分子或整数不能为0
+				}
+				if(ndown2==-1&&nup2<0)
+				{nup2=Math.abs(nup2);}
+				if(ndown2==-1&&nup2>0)
+				{nup2=0-nup2;}
+				if(ndown2>-99999)//如果存在分母，则为分数
+				{
+					if(Math.abs(ndown2)!=1)
+					{
+						if(nup2<0&&ndown2<0)
+						{nup2=Math.abs(nup2);ndown2=Math.abs(ndown2);}
+						if(ndown2<0)
+						{s2="("+nup2+"/("+ndown2+"))"+"";}
+						else
+						{s2="("+nup2+"/"+ndown2+")"+"";}
+					}
+					else
+					{
+						if(nup2<0)
+						{
+							s2="("+nup2+")"+"";
+						}
+						if(nup2>0)
+						{
+							s2=nup2+"";
+						}
+					}
+				}
+				else//否则为整数
+				{
+					if(nup2<0)
+					{
+						s2="("+nup2+")"+"";
+					}
+					if(nup2>0)
+					{
+						s2=nup2+"";
+					}
+				}
+				if(mid==3&&Remainder.equals("N"))
+				{
+					nup1=nup2*n1;ndown1=ndown2;
+					if(ndown1%n1==0)
+					{ndown1=ndown1/n1;nup1=nup1/n1;}
+					if(ndown1>-99999)//如果存在分母，则为分数
+					{
+						if(Math.abs(ndown1)!=1)
+						{s1="("+nup1+"/"+ndown1+")"+"";}
+						else//否则为整数
+						{
+							s1=nup1+"";
+						}
+					}
+					else//否则为整数
+					{
+						s1=nup1+"";
+					}
+					
+				}
+			}
+		}
+		suanshi=suanshi+s1+fuhao+s2+"=";//算式
+		Again[i][0]=suanshi;
+		for(int k=0;k<(i+1);k++)
+		{
+			if(Again[i][0].equals(Again[k][0])){k--;break;}
+		}
+		System.out.println(suanshi);
+		}
+	}
+	
+	public static void main(String args[])
+	{
+		String p3="Y";
+		Scanner pan=new Scanner(System.in);
+		System.out.println("请输入定制数量：");
+		int size=pan.nextInt();
+		System.out.println("是否有乘除法，Y--有，N--没有");
+		String p1=pan.next();
+		System.out.println("加减有无负数，Y--有，N--没有");
+		String p2=pan.next();
+		if(p1.equals("Y"))
+		{
+			System.out.println("除法有无余数，Y--有，N--没有");
+			p3=pan.next();
+		}
+		System.out.println("请输入数值范围最大值：");
+		int max=pan.nextInt();
+		System.out.println("请输入数值范围最小值：");
+		int min=pan.nextInt();
+		
+		int zhi=SIZE(size);
+		int a=MultiplyDivide(p1) ;
+		String b=Negative(p2);
+		String c=Remainder(p3);
+		int d=Max(max);
+		int e=Min(min);
+		
+		Work(a,b,c,d,e,zhi);
+		
+	}
+}
