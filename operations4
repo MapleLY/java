@@ -1,0 +1,593 @@
+import java.util.Scanner;
+class Fraction//分数
+{
+	public int numerator;//分子
+	public int denominator;//分母
+	public void creatFraction()
+	{	
+		//--生成值并化简--
+		boolean bool=false;
+		while(bool==false)
+		{
+			int up=(int)(1+Math.random()*10);
+			int down=(int)(1+Math.random()*10);
+			if(down<=up)
+			{
+				continue;
+			}
+			for(int i=2;;i++)
+			{
+				if(up%i==0&&down%i==0)
+				{
+					up/=i;
+					down/=i;
+					i-=1;
+				}
+				if(i>up||i>down)
+				{
+					break;
+				}
+			}
+			if(down==1)
+			{
+				continue;
+			}
+			else
+			{
+				numerator=up;
+				denominator=down;
+				bool=true;
+			}
+		}
+		//--生成值并化简--
+	}
+	public String strFraction()
+	{
+		String ud=new String();
+		ud="("+numerator+"/"+denominator+")";
+		return ud;
+	}
+	public int getNumerator()
+	{
+		return numerator;
+	}
+	public int getDenominator()
+	{
+		return denominator;
+	}
+}
+
+class Integer//整数
+{
+	public int integer;
+	public int downinteger=1;
+	public void creatInteger()
+	{
+		integer=(int)(1+Math.random()*100);
+	}
+	public String strInteger()
+	{
+		String g;
+		g=integer+"";
+		return g;
+	}
+	
+	public int getInteger()
+	{
+		int a=integer;
+		return a;
+	}
+	public int getDownInteger()
+	{
+		int b=downinteger;
+		return b;
+	}
+}
+
+class Operator//符号
+{
+	public String operator;
+	public int inoperator;
+	public void creatOperator()
+	{
+		inoperator=(int)(1+Math.random()*4);
+		switch(inoperator)
+		{
+		case 1:{operator="+";break;}
+		case 2:{operator="-";break;}
+		case 3:{operator="*";break;}
+		case 4:{operator="/";break;}
+		default:{System.out.println("运行出错，结束");break;}
+		}
+	}
+	public String getOperator()
+	{
+		String g=operator;
+		return g;
+	}
+	public int getInOperator()
+	{
+		int g=inoperator;
+		return g;
+	}
+}
+
+public class Operations4 
+{
+	//-----------化简区----------------
+	static int upSimple(int sup,int sdown)//化简分子
+	{
+		boolean bool=false;
+		while(bool==false)
+		{
+			for(int i=2;;i++)
+			{
+				if(sup%i==0&&sdown%i==0)
+				{
+					sup/=i;
+					sdown/=i;
+					i-=1;
+				}
+				if(i>sup||i>sdown)
+				{
+					break;
+				}
+			}
+			bool=true;
+		}
+		return sup;
+	}
+	static int downSimple(int sup,int sdown)//化简分母
+	{
+		boolean bool=false;
+		while(bool==false)
+		{
+			for(int i=2;;i++)
+			{
+				if(sup%i==0&&sdown%i==0)
+				{
+					sup/=i;
+					sdown/=i;
+					i-=1;
+				}
+				if(i>sup||i>sdown)
+				{
+					break;
+				}
+			}
+			bool=true;
+		}
+		return sdown;
+	}
+	//--------计算区---------------
+	static int getUp(int up1,int down1,int up2,int down2,int fu)//获取计算后的分子
+	{
+		int up=1,down=1;
+		switch(fu)
+		{
+		case 1:
+		{
+			up=up1*down2+up2*down1;
+			break;
+		}
+		case 2:
+		{
+			up=up1*down2-up2*down1;
+			break;
+		}
+		case 3:
+		{
+			up=up1*up2;
+			break;
+		}
+		case 4:
+		{
+			up=up1*down2;
+			break;
+		}
+		default:
+		{
+			System.out.println("运行错误，结束");
+			break;
+		}
+		}
+		return up;
+	}
+		
+		static int getDown(int up1,int down1,int up2,int down2,int fu)//获取计算后的分母
+		{
+			int up=1,down=1;
+			switch(fu)
+			{
+			case 1:
+			{
+				down=down1*down2;
+				break;
+			}
+			case 2:
+			{
+				down=down1*down2;
+				break;
+			}
+			case 3:
+			{
+				down=down1*down2;
+				break;
+			}
+			case 4:
+			{
+				down=down1*up2;
+				break;
+			}
+			default:
+			{
+				System.out.println("运行错误，结束");
+				break;
+			}
+			}
+			return down;
+		}
+		//------判断------
+		static int nCont(int nup,int ndown,int nfu)
+		{
+			int n=1;//达到要求
+			if((nfu==2&&nup<ndown)||(nfu==4&&nup>ndown))
+			{
+				n=2;//未达要求
+			}
+			return n;
+		}
+		
+	//--------运算区---------------
+	public static void main(String args[])
+	{
+		System.out.print("请输入需要的题数：");
+		Scanner shuzi=new Scanner(System.in);
+		int SIZE=shuzi.nextInt();
+		String Ends[]=new String[SIZE];
+		
+		for(int j=0;j<SIZE;j++)
+		{
+		String strOP=null;
+		//-----------确定数字---------
+		int number=(int)(2+Math.random()*3);//随机数字个数：2~4个
+		//舍弃数组[0]的位置，以下都从数组[1]开始
+		Integer zheng[]=new Integer[number+1];
+		Fraction fen[]=new Fraction[number+1];
+		Operator fuhao[]=new Operator[number];
+		
+		int Array[][]=new int[number+1][2];
+		String strArray[]=new String[number+1];
+		
+		int inBrray[]=new int[number];
+		String strBrray[]=new String[number];
+		
+		int aup=1,adown=1;
+		boolean bl=false;
+		while(bl==false)
+		{
+		    for(int i=1;i<=number;i++)//确定数字在数组中
+		    {
+			    int panduan=(int)(1+Math.random()*2);//随机分配整数或分数。1--整数，2--分数
+			    //数字划入Array数组
+			    if(panduan==1)
+			    {
+				    zheng[i]=new Integer();
+				    zheng[i].creatInteger();
+				    Array[i][0]=zheng[i].getInteger();
+				    Array[i][1]=zheng[i].getDownInteger();
+				    strArray[i]=zheng[i].strInteger();
+			    }    
+			    if(panduan==2)
+			    {
+			    	fen[i]=new Fraction();
+				    fen[i].creatFraction();
+				    Array[i][0]=fen[i].getNumerator();
+				    Array[i][1]=fen[i].getDenominator();
+				    strArray[i]=fen[i].strFraction();
+			    }
+			    //符号划入Barry数组
+			    if(i==number){break;}
+			    fuhao[i]=new Operator();
+			    fuhao[i].creatOperator();
+			    inBrray[i]=fuhao[i].getInOperator();
+			    strBrray[i]=fuhao[i].getOperator();
+		    }
+		    //---------进行运算----------
+		    if(number==2)//两个数字
+		    {
+		    	int a1,a2;
+		    	a1=getUp(Array[1][0],Array[1][1],Array[2][0],Array[2][1],inBrray[1]);
+		    	a2=getDown(Array[1][0],Array[1][1],Array[2][0],Array[2][1],inBrray[1]);
+		    	
+		    	int nC=nCont(a1,a2,inBrray[1]);
+		    	if(nC==2)
+		    	{continue;}
+		    	
+		    	
+		    	aup=upSimple(a1,a2);
+		    	adown=downSimple(a1,a2);
+		    	
+		    }
+		    if(number==3)
+		    {
+		    	if(inBrray[1]<=2&&inBrray[2]>2)
+		    	{
+		    		int b1,b2;
+		    		b1=getUp(Array[2][0],Array[2][1],Array[3][0],Array[3][1],inBrray[2]);
+			    	b2=getDown(Array[2][0],Array[2][1],Array[3][0],Array[3][1],inBrray[2]);
+			    	
+			    	int nC2=nCont(b1,b2,inBrray[2]);
+			    	if(nC2==2)
+			    	{continue;}
+			    	//---------
+			    	int a1,a2;
+			    	a1=getUp(Array[1][0],Array[1][1],b1,b2,inBrray[1]);
+			    	a2=getDown(Array[1][0],Array[1][1],b1,b2,inBrray[1]);
+			    	
+			    	int nC1=nCont(a1,a2,inBrray[1]);
+			    	if(nC1==2)
+			    	{continue;}
+			    	//---------
+			    	
+			    	aup=upSimple(a1,a2);
+			    	adown=downSimple(a1,a2);
+		    	}
+		    	else
+		    	{
+		    		int a1,a2;
+		    		a1=getUp(Array[1][0],Array[1][1],Array[2][0],Array[2][1],inBrray[1]);
+			    	a2=getDown(Array[1][0],Array[1][1],Array[2][0],Array[2][1],inBrray[1]);
+			    	
+			    	int nC1=nCont(a1,a2,inBrray[1]);
+			    	if(nC1==2)
+			    	{continue;}
+			    	//---------
+			    	int b1,b2;
+			    	b1=getUp(a1,a2,Array[3][0],Array[3][1],inBrray[2]);
+			    	b2=getDown(a1,a2,Array[3][0],Array[3][1],inBrray[2]);
+			    	
+			    	int nC2=nCont(a1,a2,inBrray[2]);
+			    	if(nC2==2)
+			    	{continue;}
+			    	//----------
+			    	
+			    	aup=upSimple(b1,b2);
+			    	adown=downSimple(b1,b2);
+		    	}
+		    }
+		    
+		    if(number==4)
+		    {
+		    	if(inBrray[1]>2)
+		    	{
+		    		int a1,a2;
+		    		a1=getUp(Array[1][0],Array[1][1],Array[2][0],Array[2][1],inBrray[1]);
+			    	a2=getDown(Array[1][0],Array[1][1],Array[2][0],Array[2][1],inBrray[1]);
+			    	
+			    	int nC1=nCont(a1,a2,inBrray[1]);
+			    	if(nC1==2)
+			    	{continue;}
+			    	
+			    	if(inBrray[2]<=2&&inBrray[3]>2)
+			    	{
+			    		int c1,c2;
+			    		c1=getUp(Array[3][0],Array[3][1],Array[4][0],Array[4][1],inBrray[3]);
+				    	c2=getDown(Array[3][0],Array[3][1],Array[4][0],Array[4][1],inBrray[3]);
+				    	
+				    	int nC3=nCont(c1,c2,inBrray[3]);
+				    	if(nC3==2)
+				    	{continue;}
+				    	//---------
+				    	int b1,b2;
+				    	b1=getUp(a1,a2,c1,c2,inBrray[2]);
+				    	b2=getDown(a1,a2,c1,c2,inBrray[2]);
+				    	
+				    	int nC2=nCont(b1,b2,inBrray[1]);
+				    	if(nC2==2)
+				    	{continue;}
+				    	//---------
+				    	
+				    	aup=upSimple(b1,b2);
+				    	adown=downSimple(b1,b2);
+			    	}
+			    	else
+			    	{
+			    		int b1,b2;
+			    		b1=getUp(a1,a2,Array[3][0],Array[3][1],inBrray[2]);
+				    	b2=getDown(a1,a2,Array[3][0],Array[3][1],inBrray[2]);
+				    	
+				    	int nC2=nCont(b1,b2,inBrray[2]);
+				    	if(nC2==2)
+				    	{continue;}
+				    	//---------
+				    	int c1,c2;
+				    	c1=getUp(b1,b2,Array[4][0],Array[4][1],inBrray[3]);
+				    	c2=getDown(b1,b2,Array[4][0],Array[4][1],inBrray[3]);
+				    	
+				    	int nC3=nCont(c1,c2,inBrray[3]);
+				    	if(nC3==2)
+				    	{continue;}
+				    	//----------
+				    	
+				    	aup=upSimple(c1,c2);
+				    	adown=downSimple(c1,c2);
+			    	}
+		    	}
+		    	else
+		    	{
+		    		if(inBrray[2]>2&&inBrray[3]<=2)
+		    		{
+		    			int b1,b2;
+			    		b1=getUp(Array[2][0],Array[2][1],Array[3][0],Array[3][1],inBrray[2]);
+				    	b2=getDown(Array[2][0],Array[2][1],Array[3][0],Array[3][1],inBrray[2]);
+				    	
+				    	int nC2=nCont(b1,b2,inBrray[2]);
+				    	if(nC2==2)
+				    	{continue;}
+				    	//---------
+				    	int a1,a2;
+			    		a1=getUp(Array[1][0],Array[1][1],b1,b2,inBrray[1]);
+				    	a2=getDown(Array[1][0],Array[1][1],b1,b2,inBrray[1]);
+				    	
+				    	int nC1=nCont(a1,a2,inBrray[1]);
+				    	if(nC1==2)
+				    	{continue;}
+				    	//----------
+				    	int c1,c2;
+			    		c1=getUp(a1,a2,Array[4][0],Array[4][1],inBrray[3]);
+				    	c2=getDown(a1,a2,Array[4][0],Array[4][1],inBrray[3]);
+				    	
+				    	int nC3=nCont(c1,c2,inBrray[3]);
+				    	if(nC3==2)
+				    	{continue;}
+				    	//----------
+				    	
+				    	aup=upSimple(c1,c2);
+				    	adown=downSimple(c1,c2);
+		    		}
+		    		else if(inBrray[2]>2&&inBrray[3]>2)
+		    		{
+		    			int b1,b2;
+			    		b1=getUp(Array[2][0],Array[2][1],Array[3][0],Array[3][1],inBrray[2]);
+				    	b2=getDown(Array[2][0],Array[2][1],Array[3][0],Array[3][1],inBrray[2]);
+				    	
+				    	int nC2=nCont(b1,b2,inBrray[2]);
+				    	if(nC2==2)
+				    	{continue;}
+				    	//---------
+				    	int c1,c2;
+			    		c1=getUp(b1,b2,Array[4][0],Array[4][1],inBrray[3]);
+				    	c2=getDown(b1,b2,Array[4][0],Array[4][1],inBrray[3]);
+				    	
+				    	int nC3=nCont(c1,c2,inBrray[3]);
+				    	if(nC3==2)
+				    	{continue;}
+				    	//----------
+				    	int a1,a2;
+			    		a1=getUp(Array[1][0],Array[1][1],c1,c2,inBrray[1]);
+				    	a2=getDown(Array[1][0],Array[1][1],c1,c2,inBrray[1]);
+				    	
+				    	int nC1=nCont(a1,a2,inBrray[1]);
+				    	if(nC1==2)
+				    	{continue;}
+				    	//----------
+				    	
+				    	aup=upSimple(a1,a2);
+				    	adown=downSimple(a1,a2);
+		    		}
+		    		else if(inBrray[2]<=2&&inBrray[3]>2)
+		    		{
+		    			int c1,c2;
+			    		c1=getUp(Array[3][0],Array[3][1],Array[4][0],Array[4][1],inBrray[3]);
+				    	c2=getDown(Array[3][0],Array[3][1],Array[4][0],Array[4][1],inBrray[3]);
+				    	
+				    	int nC3=nCont(c1,c2,inBrray[3]);
+				    	if(nC3==2)
+				    	{continue;}
+				    	//---------
+				    	int a1,a2;
+			    		a1=getUp(Array[1][0],Array[1][1],Array[2][0],Array[2][1],inBrray[1]);
+				    	a2=getDown(Array[1][0],Array[1][1],Array[2][0],Array[2][1],inBrray[1]);
+				    	
+				    	int nC1=nCont(a1,a2,inBrray[1]);
+				    	if(nC1==2)
+				    	{continue;}
+				    	//----------
+				    	int b1,b2;
+			    		b1=getUp(a1,a2,c1,c2,inBrray[2]);
+				    	b2=getDown(a1,a2,c1,c2,inBrray[2]);
+				    	
+				    	int nC2=nCont(b1,b2,inBrray[2]);
+				    	if(nC2==2)
+				    	{continue;}
+				    	//----------
+				    	
+				    	aup=upSimple(b1,b2);
+				    	adown=downSimple(b1,b2);
+		    		}
+		    		else
+		    		{
+		    			int a1,a2;
+			    		a1=getUp(Array[1][0],Array[1][1],Array[2][0],Array[2][1],inBrray[1]);
+				    	a2=getDown(Array[1][0],Array[1][1],Array[2][0],Array[2][1],inBrray[1]);
+				    	
+				    	int nC1=nCont(a1,a2,inBrray[1]);
+				    	if(nC1==2)
+				    	{continue;}
+				    	//---------
+				    	int b1,b2;
+			    		b1=getUp(a1,a2,Array[3][0],Array[3][1],inBrray[2]);
+				    	b2=getDown(a1,a2,Array[3][0],Array[3][1],inBrray[2]);
+				    	
+				    	int nC2=nCont(b1,b2,inBrray[2]);
+				    	if(nC2==2)
+				    	{continue;}
+				    	//----------
+				    	int c1,c2;
+			    		c1=getUp(b1,b2,Array[4][0],Array[4][1],inBrray[3]);
+				    	c2=getDown(b1,b2,Array[4][0],Array[4][1],inBrray[3]);
+				    	
+				    	int nC3=nCont(c1,c2,inBrray[3]);
+				    	if(nC3==2)
+				    	{continue;}
+				    	//----------
+				    	
+				    	aup=upSimple(c1,c2);
+				    	adown=downSimple(c1,c2);
+		    		}
+		    	}
+		    }
+	    	if(adown==1)
+	    	{
+	    		strOP=aup+"";
+	    	}
+	    	else
+	    	{
+	    		strOP=aup+"/"+adown;
+	    	}
+	    	
+	    	bl=true;
+		}
+		
+		String back="";
+		for(int i=1;i<=number;i++)
+		{
+			back+=strArray[i];
+			if(i==number){break;}
+			back+=strBrray[i];
+		}
+		System.out.print(back+"=");
+		
+		String shuchu=strOP;
+		
+		Ends[j]=shuchu;
+		//-------判定重复--------
+		int chuqu=1;
+		for(int q=0;q<j;q++)
+		{
+			if(Ends[j]==Ends[q])
+			{
+				chuqu=2;
+			}
+		}
+		if(chuqu==2)
+		{
+			j--;
+			continue;
+		}
+		//--------
+		Scanner sca=new Scanner(System.in);
+		String shuru=sca.next();
+		if(shuchu.equals(shuru))
+	    {
+	    	System.out.println("正确");
+	    }
+	    else
+	    {
+	    	System.out.println("错误，正确答案为："+shuchu);
+	    }
+	}
+	}
+	
+}
