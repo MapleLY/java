@@ -1,0 +1,86 @@
+import java.util.Scanner;
+public class CircleShuzu
+{
+	public static void main(String args[])
+	{	
+		Scanner shu=new Scanner(System.in);
+		System.out.println("请输入整数的个数：");
+		int count=shu.nextInt();
+		while(count<=0)
+		{
+			System.out.println("输入错误，请重新输入：");
+			count=shu.nextInt();
+		}
+		int Array[]=new int[count];
+		int Crray[]=new int[count];
+		System.out.println("请输入整数");
+		for(int i=0;i<count;i++)
+		{
+			Array[i]=shu.nextInt();
+		}
+		
+	for(int j=0;j<count;j++)
+	{
+		int b=1;
+		int Brray[]=new int[100];
+		Brray[0]=Array[j];
+		if(j==count-1)
+		{
+			for(int i=0;i<count-1;i++)
+			{
+				if(Brray[b-1]<=0)
+				{
+					Brray[b]=Array[i];
+				}
+				if(Brray[b-1]>0)
+				{
+					Brray[b]=Brray[b-1]+Array[i];
+				}
+				if(i==j-1)
+				{
+					break;
+				}
+				b++;
+			}
+		}
+		for(int i=j+1;i<count;i++)
+		{
+			if(Brray[b-1]<=0)
+			{
+				Brray[b]=Array[i];
+			}
+			if(Brray[b-1]>0)
+			{
+				Brray[b]=Brray[b-1]+Array[i];
+			}
+			if(i==count-1)
+			{
+				i=-1;
+			}
+			if(i==j-1)
+			{
+				break;
+			}
+			b++;
+		}
+		int Max1=Brray[0];
+		for(int i=1;i<count;i++)
+		{
+			if(Brray[i]>Max1)
+			{
+				Max1=Brray[i];
+			}
+		}
+		Crray[j]=Max1;
+	}
+	int Max2=Crray[0];
+	for(int m=1;m<count;m++)
+	{
+		if(Crray[m]>Max2)
+		{
+			Max2=Crray[m];
+		}
+	}
+	System.out.println("数组最大值为："+Max2);
+	}
+}
